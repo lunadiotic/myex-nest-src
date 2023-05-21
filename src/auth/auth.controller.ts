@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDTO } from './dtos/login-user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from 'src/users/dtos/user.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -37,7 +38,7 @@ export class AuthController {
   }
 
   @Get('/whoami')
-  whoAmI(@Session() session: any) {
-    return this.usersService.findOneBy(session.userId);
+  whoAmI(@CurrentUser() user: string) {
+    return user;
   }
 }
