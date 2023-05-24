@@ -69,4 +69,20 @@ describe('AuthService', () => {
       'Bad password',
     );
   });
+
+  it('should login existing user', async () => {
+    fakeUsersService.find = () => {
+      return Promise.resolve([
+        {
+          id: 1,
+          name: 'Test',
+          email: 'a@b.com',
+          password:
+            'bc1b24e0d13b66d2.e01ac338aaae90790e35cdcf09fd0a7b0425a85fb382b564c1ca1f5279fa977b',
+        } as User,
+      ]);
+    };
+    const user = await service.login('a@b.com', 'test');
+    expect(user).toBeDefined();
+  });
 });
