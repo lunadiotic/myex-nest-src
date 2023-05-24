@@ -52,4 +52,10 @@ describe('AuthService', () => {
       'User already exists',
     );
   });
+
+  it('should fail if user login with invalid email', async () => {
+    await expect(service.login('admin@mail.com', 'password')).rejects.toThrow(
+      'User not found',
+    );
+  });
 });
