@@ -5,9 +5,10 @@ import { User } from 'src/users/user.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
-    const fakeUsersService: Partial<UsersService> = {
+    fakeUsersService = {
       find: () => {
         return Promise.resolve([]);
       },
@@ -39,5 +40,16 @@ describe('AuthService', () => {
     const [salt, hash] = user.password.split('.');
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
+  });
+
+  it('should throw an error if user already exists', async () => {
+    fakeUsersService.find = () => {
+      return Promise.resolve([
+        { id: 1, name: 'Test', email: 'a@b.com', password: 'test' } as User,
+      ]);
+    };
+    await expect(service.register('Test', 'a@b.com', 'test')).rejects.toThrow(
+      'User already exists',
+    );
   });
 });
