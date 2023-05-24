@@ -58,4 +58,15 @@ describe('AuthService', () => {
       'User not found',
     );
   });
+
+  it('should fail if user login with invalid password', async () => {
+    fakeUsersService.find = () => {
+      return Promise.resolve([
+        { id: 1, name: 'Test', email: 'a@b.com', password: 'test' } as User,
+      ]);
+    };
+    await expect(service.login('a@b.com', 'admin')).rejects.toThrow(
+      'Bad password',
+    );
+  });
 });
