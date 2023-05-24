@@ -7,7 +7,7 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
-    const fakeUsersService = {
+    const fakeUsersService: Partial<UsersService> = {
       find: () => {
         return Promise.resolve([]);
       },
@@ -31,5 +31,13 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should create a new user with a salted and hashed password', async () => {
+    const user = await service.register('Test', 'a@b.com', 'test');
+    expect(user.password).not.toEqual('test');
+    const [salt, hash] = user.password.split('.');
+    expect(salt).toBeDefined();
+    expect(hash).toBeDefined();
   });
 });
