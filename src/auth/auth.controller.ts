@@ -1,27 +1,16 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Session,
-  UseInterceptors,
-} from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
-import { UsersService } from 'src/users/users.service';
+import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { AuthService } from './auth.service';
 import { LoginUserDTO } from './dtos/login-user.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { UserDto } from 'src/users/dtos/user.dto';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { UserDto } from '../users/dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 
 @Controller('auth')
 @Serialize(UserDto)
 export class AuthController {
-  constructor(
-    private usersService: UsersService,
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
   @Post('/register')
   async register(@Body() body: CreateUserDto, @Session() session: any) {
     const user = await this.authService.register(
