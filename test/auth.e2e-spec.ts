@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { setupApp } from '../src/setup-app';
 
 describe('Auth Controller (e2e)', () => {
   let app: INestApplication;
@@ -12,6 +13,7 @@ describe('Auth Controller (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    setupApp(app);
     await app.init();
   });
 
@@ -20,15 +22,15 @@ describe('Auth Controller (e2e)', () => {
       .post('/auth/register')
       .send({
         name: 'sakata',
-        email: 'kintoki3@mail.com',
+        email: 'kintoki5@mail.com',
         password: 'test',
       })
       .expect(201)
       .then(({ body }: request.Response) => {
         expect(body).toMatchObject({
-          id: expect.any(String),
+          id: expect.any(Number),
           name: 'sakata',
-          email: 'kintoki1@mail.com',
+          email: 'kintoki5@mail.com',
         });
       });
   });
