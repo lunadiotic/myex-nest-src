@@ -32,4 +32,24 @@ describe('Auth Controller (e2e)', () => {
         });
       });
   });
+
+  it('logged in after register (POST)', async () => {
+    const email = 'kintoki9@mail.com';
+    const res = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'sakata',
+        email,
+        password: 'test',
+      })
+      .expect(201);
+
+    const cookie = res.get('Set-Cookie');
+    const { body } = await request(app.getHttpServer())
+      .get('/auth/whoami')
+      .set('Cookie', cookie)
+      .expect(200);
+
+    expect(body.email).toEqual(email);
+  });
 });
