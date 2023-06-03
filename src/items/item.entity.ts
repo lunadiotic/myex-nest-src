@@ -19,4 +19,7 @@ export class Item {
 
   @Column()
   category: string;
+
+  @Column()
+  year: string;
 }
