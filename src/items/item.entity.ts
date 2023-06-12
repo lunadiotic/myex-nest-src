@@ -24,6 +24,9 @@ export class Item {
   @Column()
   year: string;
 
+  @Column({ default: false })
+  approved: boolean;
+
   @ManyToOne(() => User, (user) => user.items)
   user: User;
 }
