@@ -4,11 +4,20 @@ import { Repository } from 'typeorm';
 import { Item } from './item.entity';
 import { CreateItemDto } from './dtos/create-item.dto';
 import { User } from '../users/user.entity';
+import { QueryItemDto } from './dtos/query-item.dto';
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(Item) private itemRepository: Repository<Item>,
   ) {}
+
+  getAllItems(queryItemDto: QueryItemDto) {
+    return this.itemRepository
+      .createQueryBuilder()
+      .select('*')
+      .where('location = :location', { location: queryItemDto.location })
+      .getRawMany();
+  }
 
   create(itemDto: CreateItemDto, user: User) {
     const item = this.itemRepository.create(itemDto);

@@ -17,15 +17,15 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { ItemDto } from './dtos/item.dto';
 import { ApproveItemDto } from './dtos/approve-item.dto';
 import { AdminGuard } from '../guards/admin.guard';
-import { GetItemDto } from './dtos/get-item.dto';
+import { QueryItemDto } from './dtos/query-item.dto';
 
 @Controller('items')
 export class ItemsController {
   constructor(private itemService: ItemsService) {}
 
   @Get()
-  getAllItems(@Query() query: GetItemDto) {
-    console.log(query);
+  getAllItems(@Query() query: QueryItemDto) {
+    return this.itemService.getAllItems(query);
   }
 
   @Post()
