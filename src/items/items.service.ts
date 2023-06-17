@@ -11,12 +11,28 @@ export class ItemsService {
     @InjectRepository(Item) private itemRepository: Repository<Item>,
   ) {}
 
-  getAllItems(queryItemDto: QueryItemDto) {
-    return this.itemRepository
-      .createQueryBuilder()
-      .select('*')
-      .where('location = :location', { location: queryItemDto.location })
-      .getRawMany();
+  async getAllItems(queryItemDto: QueryItemDto): Promise<Item[]> {
+    const queryBuilder = this.itemRepository.createQueryBuilder('item');
+
+    // Tambahkan klausa WHERE berdasarkan data yang ada dalam QueryItemDto
+    if (queryItemDto.name) {
+      queryBuilder.andWhere('item.name = :name', { name: queryItemDto.name });
+    }
+    if (queryItemDto.category) {
+      queryBuilder.andWhere('item.category = :category', {
+        category: queryItemDto.category,
+      });
+    }
+    if (queryItemDto.year) {
+      queryBuilder.andWhere('item.year = :year', { year: queryItemDto.year });
+    }
+    if (queryItemDto.location) {
+      queryBuilder.andWhere('item.location = :location', {
+        location: queryItemDto.location,
+      });
+    }
+
+    return queryBuilder.getRawMany();
   }
 
   create(itemDto: CreateItemDto, user: User) {
