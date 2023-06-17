@@ -16,19 +16,23 @@ export class ItemsService {
 
     // Tambahkan klausa WHERE berdasarkan data yang ada dalam QueryItemDto
     if (queryItemDto.name) {
-      queryBuilder.andWhere('item.name = :name', { name: queryItemDto.name });
+      queryBuilder.andWhere('item.name LIKE :name', {
+        name: `%${queryItemDto.name}%`,
+      });
     }
     if (queryItemDto.category) {
-      queryBuilder.andWhere('item.category = :category', {
-        category: queryItemDto.category,
+      queryBuilder.andWhere('item.category LIKE :category', {
+        category: `%${queryItemDto.category}%`,
       });
     }
     if (queryItemDto.year) {
-      queryBuilder.andWhere('item.year = :year', { year: queryItemDto.year });
+      queryBuilder.andWhere('item.year LIKE :year', {
+        year: `%${queryItemDto.year}%`,
+      });
     }
     if (queryItemDto.location) {
-      queryBuilder.andWhere('item.location = :location', {
-        location: queryItemDto.location,
+      queryBuilder.andWhere('item.location LIKE :location', {
+        location: `%${queryItemDto.location}%`,
       });
     }
 
