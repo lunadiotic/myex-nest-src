@@ -1,15 +1,21 @@
-import { IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GetItemDto {
   @IsString()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsString()
-  location: string;
+  @IsOptional()
+  location?: string;
 
   @IsString()
-  category: string;
+  @IsOptional()
+  category?: string;
 
-  @IsString()
-  year: string;
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsOptional()
+  year?: number;
 }
