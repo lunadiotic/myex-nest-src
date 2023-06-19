@@ -48,7 +48,10 @@ import cookieSession = require('cookie-session');
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {}
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(cookieSession({ keys: ['r4nd0m5tRin6'] })).forRoutes('*');
+    consumer
+      .apply(cookieSession({ keys: [this.configService.get('COOKIE_KEY')] }))
+      .forRoutes('*');
   }
 }
